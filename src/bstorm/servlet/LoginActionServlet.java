@@ -23,7 +23,7 @@ import bstorm.listener.EntityManagerFactoryInjection;
 /**
  * Servlet implementation class LoginActionServlet
  */
-@WebServlet("/LoginActionServlet")
+@WebServlet("/login.do")
 public class LoginActionServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private static final String DEFAULT_REDIRECT_VALUE = "index.jsp";
