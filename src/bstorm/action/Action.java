@@ -1,10 +1,10 @@
 package bstorm.action;
 
-import javax.servlet.http.HttpSession;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
 
 public interface Action {
-	String getName();
-	String getView();
-	String[] getParamNames();
-	Object doAction(HttpSession session, Object params[]) throws ActionException;
+	Map<String, Class<?>> getParamNames();
+	Object doAction(HttpServletRequest request, Object params[]) throws ActionException;
 }

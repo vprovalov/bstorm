@@ -1,28 +1,23 @@
 package bstorm.action;
 
+import java.util.Map;
+
 import javax.servlet.http.HttpSession;
 
-public class LogoutAction extends BaseAction {
-
+@WebAction(name="logout", role="user")
+public class LogoutAction extends BaseUserAction {
 	@Override
-	public String getName() {
-		return "logout";
-	}
-
-	@Override
-	public String getView() {
+	public Map<String, Class<?>> getParamNames() {
 		return null;
 	}
 
 	@Override
-	public String[] getParamNames() {
-		return null;
-	}
-
-	@Override
-	public Object doAction(HttpSession session, Object[] params)
-			throws ActionException {
-		// TODO Auto-generated method stub
+	public Object doAction(Object[] params) throws ActionException {
+		if (getUser() == null) throw new ActionException("User is not logged in!");
+		
+		HttpSession session = getHttpRequest().getSession();
+		session.invalidate();
+		
 		return null;
 	}
 }

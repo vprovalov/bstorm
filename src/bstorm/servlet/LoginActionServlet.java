@@ -75,6 +75,7 @@ public class LoginActionServlet extends HttpServlet {
 			}
 		} catch(Exception ex) {
 			errorMsg = ex.getMessage();
+			getServletContext().log("Exception caught:", ex);
 		}
 		response.sendRedirect("login.jsp?" + AuthorizationFilter.FROM_VARIABLE + "=" + redirectTo + "&errormsg=" + URLEncoder.encode(errorMsg, "UTF-8"));	
 	}

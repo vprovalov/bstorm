@@ -1,5 +1,5 @@
 <%@page import="java.util.Map"%>
-<%@page import="bstorm.action.Action"%>
+<%@page import="bstorm.action.BaseAction"%>
 <%@page import="bstorm.servlet.ActionServlet"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
@@ -17,16 +17,17 @@
 <body>
 	<h1>Actions available:</h1>
 	<% 
-		Map<String, Action> actionsMap = (Map<String, Action>)request.getAttribute(ActionServlet.ACTIONS_PARAM);
-		for(Action action : actionsMap.values()) {
+		Map<String, Class<?>> actionsMap = (Map<String, Class<?>>)request.getAttribute(ActionServlet.ACTIONS_PARAM);
+		for(Class<?> actionClazz : actionsMap.values()) {
+				BaseAction action = (BaseAction)actionClazz.newInstance();
 	%>
-		<form name="form.<%= action.getName() %>" method="GET" action="<%= request.getServletContext().getContextPath() %>/action/<%= action.getName() %>">
+		<form name="form.<%= action.getName() %>" method="POST" action="<%= request.getServletContext().getContextPath() %>/action/<%= action.getName() %>">
 			<h2><%= action.getName() %></h2>
 			<%
 				if (action.getParamNames() != null) {
-					for(String param: action.getParamNames()) {	
+					for(String param: action.getParamNames().keySet()) {	
 			%>
-					<label><%= param%>:</label> <input type="text" name="<%= param%>"/><br/>	
+					<label><%= param%>(<%= action.getParamNames().get(param).getSimpleName() %>):</label> <input type="text" name="ACTION-<%= param%>"/><br/>	
 			<%
 					}
 				}
