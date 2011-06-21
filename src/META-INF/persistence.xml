@@ -5,10 +5,6 @@
 		<class>bstorm.entity.User</class>
 		<exclude-unlisted-classes>false</exclude-unlisted-classes>
 		<properties>
-			<property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
-			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://lx4-vprovalov.nn.five9.com:3306/bstorm"/>
-			<property name="javax.persistence.jdbc.user" value="bstorm"/>
-			<property name="javax.persistence.jdbc.password" value="password"/>
 			<property name="hibernate.hbm2ddl.auto" value="update"/>
 		</properties>		
 	</persistence-unit>
