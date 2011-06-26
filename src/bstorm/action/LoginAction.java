@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import bstorm.dao.UserDAO;
 import bstorm.entity.User;
 
-@WebAction(name="login")
+@WebAction(name="login", view="/login.jsp")
 public class LoginAction extends BaseUserAction implements ActionRequiredEntityManager {	
 	private UserDAO dao;
 	

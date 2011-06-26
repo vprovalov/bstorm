@@ -134,7 +134,7 @@ public class ActionServlet extends HttpServlet {
 								response.flushBuffer();
 							} else {
 								ActionException ex = (ActionException)request.getAttribute(ACTION_EXCEPTION);
-								response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error executing action '" + ActionUtils.getActionName(action) + "': " + ex.getMessage());
+								response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Error executing action '" + ActionUtils.getActionName(action) + "': " + ex.getMessage());
 							}
 						}						
 					}
@@ -143,6 +143,8 @@ public class ActionServlet extends HttpServlet {
 					return;
 				}
 			}			
+		} catch (SecurityException ex) {
+			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Exception caught: " + ex.getMessage());
 		} catch (Exception ex) {
 			getServletContext().log("Exception caught:", ex);
 			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Exception caught: " + ex.getMessage());

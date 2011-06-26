@@ -26,7 +26,7 @@ import bstorm.listener.EntityManagerFactoryInjection;
 @WebServlet("/login.do")
 public class LoginActionServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private static final String DEFAULT_REDIRECT_VALUE = "index.jsp";
+	private static final String DEFAULT_REDIRECT_VALUE = "home.jsp";
 	
 	public static final String REDIRECT_TO_VARIABLE = "redirect-to";
 	public static final String SESSION_USER_VARIABLE = "USER";
@@ -58,7 +58,7 @@ public class LoginActionServlet extends HttpServlet {
 
 		try {
 			if (loginUserName != null && loginUserName.length() > 0) {
-				EntityManagerFactory emf = ApplicationContextUtils.getEntityManagerFactory(request.getServletContext());
+				EntityManagerFactory emf = ApplicationContextUtils.getEntityManagerFactory(getServletContext());
 				EntityManager em = emf.createEntityManager();
 				UserDAO dao = new UserDAO(em);
 				
@@ -77,7 +77,7 @@ public class LoginActionServlet extends HttpServlet {
 			errorMsg = ex.getMessage();
 			getServletContext().log("Exception caught:", ex);
 		}
-		response.sendRedirect("login.jsp?" + AuthorizationFilter.FROM_VARIABLE + "=" + redirectTo + "&errormsg=" + URLEncoder.encode(errorMsg, "UTF-8"));	
+		response.sendRedirect(request.getContextPath() + "/login.jsp?" + AuthorizationFilter.FROM_VARIABLE + "=" + redirectTo + "&errormsg=" + URLEncoder.encode(errorMsg, "UTF-8"));	
 	}
 
 	/**

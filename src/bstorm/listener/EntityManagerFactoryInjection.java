@@ -7,6 +7,7 @@ import java.util.Properties;
 
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.persistence.PersistenceException;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
@@ -31,8 +32,12 @@ public class EntityManagerFactoryInjection implements ServletContextListener {
 	}
 
     public void contextInitialized(ServletContextEvent contextEvent) {
-    	EntityManagerFactory emf = Persistence.createEntityManagerFactory(JPA_UNIT, getPersistenceProperties());
-        contextEvent.getServletContext().setAttribute(EMF_VARIABLE, emf);
+    	try {
+    		EntityManagerFactory emf = Persistence.createEntityManagerFactory(JPA_UNIT, getPersistenceProperties());
+    		contextEvent.getServletContext().setAttribute(EMF_VARIABLE, emf);
+    	} catch (PersistenceException ex) {
+    		contextEvent.getServletContext().log("Exception caught during persistence system initialization:", ex);
+    	}
     }
 
     public void contextDestroyed(ServletContextEvent contextEvent) {

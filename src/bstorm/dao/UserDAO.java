@@ -9,9 +9,19 @@ import bstorm.entity.User;
 
 public class UserDAO {
 	private EntityManager em;
+	
+	public UserDAO() {
+		setEntityManager(null);
+	}
+	
 	public UserDAO(EntityManager em) {
+		setEntityManager(em);
+	}
+	
+	public void setEntityManager(EntityManager em) {
 		this.em = em;
 	}
+	
 	public User findByName(final String name) {
 		Query q = em.createQuery("SELECT u FROM User u WHERE name='" + name + "'");
 		List result = q.getResultList();
