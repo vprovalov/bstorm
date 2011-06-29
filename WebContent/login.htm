@@ -1,0 +1,33 @@
+#if (${errorMessage})
+	<div class="ui-widget">
+		<div class="ui-state-error ui-corner-all" style="padding: 0 .7em;"> 
+			<p><span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span> 
+			<strong>Ошибка:</strong> ${errorMessage}</p>
+		</div>
+	</div>		
+#end
+<form name="loginForm" action="${context}/login.htm" method="post">
+	<input type="hidden" name="form_name" id="form_form_name" value="form"/> 
+	<table cellspacing="3">
+		<tr>
+			<td align="right">
+				<label>Учетная запись</label>						
+			</td>
+			<td>
+				<input name="username" type="text" style="width: 150px" value="${form.getFieldValue('username')}"/>
+			</td>					
+		</tr>
+		<tr>
+			<td align="right">
+				<label>Пароль</label>						
+			</td>
+			<td>
+				<input name="password" type="password" style="width: 150px" value=""/>
+			</td>					
+		</tr>
+		<tr>
+			<td></td>
+			<td align="right"><input type="submit" value="Войти"/></td>
+		</tr>				
+	</table>
+</form>

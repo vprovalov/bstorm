@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <click-app charset="UTF-8">
-  <pages package="bstorm.page" autobinding="annotation"/>
+	<mode value="trace"/>
+	<pages automapping="false">
+	<page path="home.htm" classname="bstorm.page.Home"/>
+	<page path="login.htm" classname="bstorm.page.Login"></page><page path="logout.htm" classname="bstorm.page.Logout"></page></pages>
 </click-app>

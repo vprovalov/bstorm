@@ -1,0 +1,106 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+	<title>Метод мозгового штурма</title>
+	<link href="css/common.css" rel="stylesheet" />
+	<link href="css/user.css" rel="stylesheet" />
+	<link type="text/css" href="css/cupertino/jquery-ui-1.8.12.custom.css" rel="stylesheet" />	
+	<script type="text/javascript" src="js/jquery-1.5.1.min.js"></script>
+	<script type="text/javascript" src="js/jquery-ui-1.8.12.custom.min.js"></script>
+	<script type="text/javascript">
+	$(function(){
+		$('.button.ui-state-default').hover(
+			function() { $(this).addClass('ui-state-hover'); }, 
+			function() { $(this).removeClass('ui-state-hover'); }
+		);
+	});
+	
+	$(function() {
+		$('#login-dialog').dialog({
+			autoOpen: false,
+			modal: true,
+			resizable: false,
+			buttons: {
+				"Войти" : function() {
+					document.loginForm.submit();
+				},				
+				"Закрыть" : function() {
+					$(this).dialog('close');
+				}
+			}
+		});		
+
+		$('#login').click(function() {
+			$('#login-dialog').dialog('open');			
+			return false;
+		});
+	});
+
+	</script>
+</head>
+<body>
+	<div class="header">
+		<div class="header-left">
+		<a href="${context}/home.htm">Метод мозгового штурма</a>
+		</div>
+		<div class="header-right">
+			<table cellspacing="4">
+				<tr>
+				#if (!$user)
+					<td>
+						<a id="login" href="#">Вход</a>
+					</td>
+					<td>
+						<a href="${context}/register.htm">Регистрация</a>
+					</td>
+				#else
+					<tr>
+						<td>
+							${user.name}
+						</td>
+						<td>
+							[сообщений: нет]<span class="ui-icon ui-icon-mail-closed"></span>						
+						</td>
+						<td>
+							<a href="${context}/logout.htm" title="Выход">Выйти</a>
+						</td>
+					</tr>
+				#end
+				</tr>
+			</table>
+		</div>
+	</div>
+	<div class="page">
+	#parse($path)
+	</div>
+	<div class="footer">
+		<span>(c) 2011 Информация к размышлению</span>
+		<span><a href="${context}/about.htm">О программе</a></span>
+		<span><a href="${context}/brainstorming.htm">О методе</a></span>
+	</div>
+	
+	<div id="login-dialog" title="Вход" style="display: none">
+		<form name="loginForm" action="${context}/login.htm" method="post">
+			<input type="hidden" name="form_name" id="form_form_name" value="form"/> 
+			<table cellspacing="3">
+				<tr>
+					<td align="right">
+						<label>Учетная запись</label>						
+					</td>
+					<td>
+						<input name="username" type="text" style="width: 150px"/>
+					</td>					
+				</tr>
+				<tr>
+					<td align="right">
+						<label>Пароль</label>						
+					</td>
+					<td>
+						<input name="password" type="password" style="width: 150px"/>
+					</td>					
+				</tr>				
+			</table>
+		</form>
+	</div>
+</body>
+</html>	
