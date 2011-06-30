@@ -2,6 +2,11 @@
 <click-app charset="UTF-8">
 	<mode value="trace"/>
 	<pages automapping="false">
-	<page path="home.htm" classname="bstorm.page.Home"/>
-	<page path="login.htm" classname="bstorm.page.Login"></page><page path="logout.htm" classname="bstorm.page.Logout"></page></pages>
+		<page path="home.htm" classname="bstorm.page.Home"/>
+		<page path="login.htm" classname="bstorm.page.Login"/>
+		<page path="logout.htm" classname="bstorm.page.Logout"/>
+		<page path="task.htm" classname="bstorm.page.Task"/>
+		<page path="admin.htm" classname="bstorm.page.Admin"/>
+		<page path="register.htm" classname="bstorm.page.Register"/>
+	</pages>
 </click-app>

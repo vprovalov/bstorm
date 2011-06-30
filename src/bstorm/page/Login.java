@@ -37,7 +37,11 @@ public class Login extends BasePage {
 				User user = userDao.findByName(username);
 				if (user != null && user.getPassword().equals(password)) {
 					authorizeUser(user);
-					setRedirect(Home.class);
+					if (user.getRole().equals("admin")) {
+						setRedirect(Admin.class);
+					} else {
+						setRedirect(Home.class);
+					}
 				} else {
 					errorMessage = "Ќеправильна€ учетна€ запись или пароль!";
 				}

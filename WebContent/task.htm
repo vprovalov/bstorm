@@ -1,0 +1,21 @@
+#if (${info})
+	<h2>Новые задачи</h2>
+	<table cellspacing="0" cellpadding="0">
+		#foreach ($task in $info.newTasks)
+		<tr>
+			<td>
+				${task.shortDescription}					
+			</td>
+			<td class="data-column">
+				${task.owner.name}
+			</td>
+			<td class="data-column">
+				&nbsp;
+			</td>
+			<td class="data-column">
+				${task.participants.size()}/${task.maxParticipants}
+			</td>
+		</tr>
+		#end
+	</table>
+#end

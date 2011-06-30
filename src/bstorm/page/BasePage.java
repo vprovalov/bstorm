@@ -18,7 +18,6 @@ public class BasePage extends Page {
 	private EntityManager em = null;
 	public User user = null;
 		
-	
 	@Override
 	public List<Element> getHeadElements() {
 		if (headElements == null) {
