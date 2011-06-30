@@ -26,14 +26,14 @@ public class TaskDAO {
 	}
 	
 	public List<Task> findTasksNew() {
-		return em.createQuery("SELECT t FROM Task t WHERE p.state = 'INIT'", Task.class).getResultList();
+		return em.createQuery("SELECT t FROM Task t WHERE t.state = 'INIT'", Task.class).getResultList();
 	}
 	
 	public List<Task> findTasksInProgress() {
-		return em.createQuery("SELECT t FROM Task t WHERE p.state NOT IN ('INIT', 'FINISHED')", Task.class).getResultList();
+		return em.createQuery("SELECT t FROM Task t WHERE t.state NOT IN ('INIT', 'FINISHED')", Task.class).getResultList();
 	}
 	
 	public List<Task> findTasksFinished() {
-		return em.createQuery("SELECT t FROM Task t WHERE p.state = 'FINISHED'", Task.class).getResultList();
+		return em.createQuery("SELECT t FROM Task t WHERE t.state = 'FINISHED'", Task.class).getResultList();
 	}
 }
