@@ -33,10 +33,22 @@ public class UserDAO {
 		return null;
 	}
 	
+	public User findById(final Long id) {
+		return em.find(User.class, id);
+	}
+	
 	public void update(final User user) {
 		EntityTransaction tr = em.getTransaction();
 		tr.begin();
 		em.persist(user);
 		tr.commit();
+	}
+	
+	public List<User> getAllUsers() {
+		return em.createQuery("SELECT u FROM User u").getResultList();
+	}
+	
+	public void deleteUser(final Long id) {
+		em.createQuery("DELETE FROM User u WHERE e.id = '?1'").setParameter(1, id).executeUpdate();
 	}
 }

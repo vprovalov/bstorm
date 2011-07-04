@@ -13,11 +13,11 @@ import bstorm.dao.UserDAO;
 import bstorm.entity.User;
 
 
-public class Login extends BasePage {
+public class LoginPage extends BasePage {
 	public Form form = new Form("form");
 	public String errorMessage;
 	
-	public Login() {
+	public LoginPage() {
 		form.add(new TextField("username", true));
 		form.add(new PasswordField("password", true));
 		form.setListener(this, "onSubmit");
@@ -43,9 +43,9 @@ public class Login extends BasePage {
 						userDao.update(user);
 						authorizeUser(user);
 						if (user.getRole().equals("admin")) {
-							setRedirect(Admin.class);
+							setRedirect(bstorm.page.UserPage.class);
 						} else {
-							setRedirect(Home.class);
+							setRedirect(HomePage.class);
 						}
 					} else {
 						errorMessage = "Пользователь не активирован! Обратитесь к администратору!";

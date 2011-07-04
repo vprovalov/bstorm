@@ -9,7 +9,7 @@ import org.apache.click.element.JsImport;
 
 import bstorm.entity.User;
 
-public class Admin extends BasePage {
+public class AdminPage extends AdminOnlyPage {
 	@Override
 	public List<Element> getHeadElements() {
 		if (headElements == null) {
@@ -20,18 +20,4 @@ public class Admin extends BasePage {
 		}
 		return headElements;
 	}
-	
-	@Override
-	public boolean onSecurityCheck() {
-		HttpSession session = getContext().getRequest().getSession(false);
-		if (session != null) {
-			User user = (User)session.getAttribute("user");
-			if (user != null && user.getRole().equals("admin")) {
-				return true;
-			}
-		}		
-		
-		setRedirect(Home.class);
-		return false;
-	}	
 }

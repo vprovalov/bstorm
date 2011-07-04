@@ -13,10 +13,10 @@ import bstorm.dao.UserDAO;
 import bstorm.entity.User;
 import bstorm.utils.StringUtils;
 
-public class Register extends BasePage {
+public class RegisterPage extends BasePage {
 	public Form registerForm = new Form();
 	
-	public Register(){
+	public RegisterPage(){
 		FieldSet loginFieldSet = new FieldSet("Учетная запись");
 		registerForm.add(loginFieldSet);
 		
@@ -89,7 +89,7 @@ public class Register extends BasePage {
 						
 						userDao.update(user);
 						
-						setRedirect(Home.class);
+						setRedirect(HomePage.class);
 						return true;
 					} else {
 						registerForm.setError("Пользователь с таким именем уже существует!");

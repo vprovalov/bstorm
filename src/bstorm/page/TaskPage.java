@@ -12,7 +12,7 @@ import bstorm.dao.TaskDAO;
 
 import com.google.gson.Gson;
 
-public class Task extends BasePage {
+public class TaskPage extends BasePage {
 	@Bindable
 	private Long id;
 	private TaskDAO taskDao = null;
