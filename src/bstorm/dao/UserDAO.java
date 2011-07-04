@@ -3,6 +3,7 @@ package bstorm.dao;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
 
 import bstorm.entity.User;
@@ -30,5 +31,12 @@ public class UserDAO {
 			if (u instanceof User) return (User)u;
 		}
 		return null;
+	}
+	
+	public void update(final User user) {
+		EntityTransaction tr = em.getTransaction();
+		tr.begin();
+		em.persist(user);
+		tr.commit();
 	}
 }

@@ -1,5 +1,7 @@
 package bstorm.page;
 
+import java.util.Date;
+
 import javax.persistence.EntityManager;
 import javax.servlet.http.HttpServletRequest;
 
@@ -36,11 +38,17 @@ public class Login extends BasePage {
 				UserDAO userDao = new UserDAO(em);
 				User user = userDao.findByName(username);
 				if (user != null && user.getPassword().equals(password)) {
-					authorizeUser(user);
-					if (user.getRole().equals("admin")) {
-						setRedirect(Admin.class);
+					if (user.isActive()) {
+						user.setLastLogin(new Date());
+						userDao.update(user);
+						authorizeUser(user);
+						if (user.getRole().equals("admin")) {
+							setRedirect(Admin.class);
+						} else {
+							setRedirect(Home.class);
+						}
 					} else {
-						setRedirect(Home.class);
+						errorMessage = "Пользователь не активирован! Обратитесь к администратору!";
 					}
 				} else {
 					errorMessage = "Неправильная учетная запись или пароль!";

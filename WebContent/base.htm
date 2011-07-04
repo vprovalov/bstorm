@@ -1,7 +1,15 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
 <head>
-	<title>Метод мозгового штурма</title>
+	<title>Метод мозгового штурма
+	#if ($user) 
+		#if ($user.role == 'moderator')
+		(модератор)
+		#elseif ($user.role == 'admin')
+		(администратор)
+		#end
+	#end
+	</title>
 	${headElements}
 	${jsElements}
 </head>
@@ -23,7 +31,7 @@
 				#else
 					<tr>
 						<td>
-							${user.name}
+							${user.firstname} ${user.lastname}
 						</td>
 						<td>
 							[сообщений: нет]<span class="ui-icon ui-icon-mail-closed"></span>						
