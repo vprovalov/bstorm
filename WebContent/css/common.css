@@ -136,7 +136,7 @@ table {
 	margin: 5px;
 }
 
-.page table td {
+.page table.tasks td {
 	border-bottom: 1px solid #CCC;
 	padding: 4px;
 }

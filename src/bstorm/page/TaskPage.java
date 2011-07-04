@@ -5,10 +5,14 @@ import java.util.List;
 import javax.persistence.EntityManager;
 
 import org.apache.click.ActionResult;
+import org.apache.click.element.CssImport;
+import org.apache.click.element.Element;
+import org.apache.click.element.JsImport;
 import org.apache.click.util.Bindable;
 import org.apache.click.util.ClickUtils;
 
 import bstorm.dao.TaskDAO;
+import bstorm.entity.Task;
 
 import com.google.gson.Gson;
 
@@ -16,8 +20,21 @@ public class TaskPage extends BasePage {
 	@Bindable
 	private Long id;
 	private TaskDAO taskDao = null;
+	public Task theTask = null;
+	public List<Task> tasks = null;
 	
-	public FullTasksInformation info = null;
+	@Override
+	public List<Element> getHeadElements() {
+		if (headElements == null) {
+			headElements = super.getHeadElements();
+			
+			JsImport jsimport = new JsImport("/js/task-init.js");
+			headElements.add(jsimport);
+			jsimport = new JsImport("/js/jquery.form.js");
+			headElements.add(jsimport);			
+		}
+		return headElements;
+	}
 	
 	@Override
 	public void onInit() {
@@ -27,7 +44,9 @@ public class TaskPage extends BasePage {
 		if (em != null) {
 			taskDao = new TaskDAO(em);
 			if (id == null) {
-				info = new FullTasksInformation();			
+				tasks = taskDao.getAllTasks();			
+			} else {
+				theTask = taskDao.findById(id);
 			}
 		}
 	}
@@ -40,35 +59,9 @@ public class TaskPage extends BasePage {
 				bstorm.entity.Task task = taskDao.findById(id);
 				result = (new Gson()).toJson(task);
 			} else {
-				result = (new Gson()).toJson(info);
+				result = (new Gson()).toJson(tasks);
 			}
 		}
 		return new ActionResult(result, ClickUtils.getMimeType("json")); 
-	}	
-	
-	public class FullTasksInformation {
-		private List<bstorm.entity.Task> newTasks = null;
-		private List<bstorm.entity.Task> inProgressTasks = null;
-		private List<bstorm.entity.Task> finishedTasks = null;
-		
-		public List<bstorm.entity.Task> getNewTasks() {
-			return newTasks;
-		}
-		
-		public List<bstorm.entity.Task> getInProgressTasks() {
-			return inProgressTasks;
-		}
-
-		public List<bstorm.entity.Task> getFinishedTasks() {
-			return finishedTasks;
-		}
-
-		public FullTasksInformation() {
-			if (taskDao != null) {
-				newTasks = taskDao.findTasksNew();
-				inProgressTasks = taskDao.findTasksInProgress();
-				finishedTasks = taskDao.findTasksFinished();
-			}
-		}
 	}
 }

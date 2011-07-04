@@ -7,11 +7,13 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceException;
 
 import org.apache.click.ActionListener;
+import org.apache.click.Context;
 import org.apache.click.Control;
 import org.apache.click.control.AbstractLink;
 import org.apache.click.control.ActionLink;
 import org.apache.click.control.Checkbox;
 import org.apache.click.control.Column;
+import org.apache.click.control.Decorator;
 import org.apache.click.control.FieldSet;
 import org.apache.click.control.Form;
 import org.apache.click.control.HiddenField;
@@ -24,6 +26,7 @@ import org.apache.click.control.TextField;
 import org.apache.click.dataprovider.DataProvider;
 import org.apache.click.extras.control.LinkDecorator;
 import org.apache.click.util.Bindable;
+import org.apache.click.util.HtmlStringBuffer;
 
 import bstorm.dao.UserDAO;
 import bstorm.entity.User;
@@ -52,15 +55,46 @@ public class UserPage extends AdminOnlyPage {
 	public UserPage() {
 		addControl(usersTable);
 		
+		usersTable.setClass(Table.CLASS_ITS);
 		usersTable.setPageSize(10);
 		usersTable.setShowBanner(true);
 		usersTable.setSortable(true);
 		
+		Column column = new Column("active", "");
+		column.setDecorator(new Decorator() {
+			@Override
+			public String render(Object object, Context context) {
+				boolean active = ((User)object).isActive();
+				HtmlStringBuffer buffer = new HtmlStringBuffer();
+				buffer.elementStart("img");
+				buffer.appendAttribute("src", context.getServletContext().getContextPath() + "/css/images/" + (active ? "bullet_green.png" : "bullet_red.png"));
+				buffer.appendAttribute("title", (active ? "Активный" : "Не активный"));
+				buffer.elementEnd();
+				return buffer.toString();
+			}
+		});
+		
+		usersTable.addColumn(column);		
 		usersTable.addColumn(new Column("id"));
 		usersTable.addColumn(new Column("name", "Логин"));
+		
 		usersTable.addColumn(new Column("firstname", "Имя"));
 		usersTable.addColumn(new Column("lastname", "Фамилия"));
-		usersTable.addColumn(new Column("role", "Группа"));
+		column = new Column("role", "Группа");
+		column.setDecorator(new Decorator() {
+			@Override
+			public String render(Object object, Context context) {
+				final String role = ((User)object).getRole();
+				if (role.equals("admin")) {
+					return "Администратор";
+				} else if (role.equals("moderator")) {
+					return "Модератор";
+				}
+				return "Пользователь";
+			}
+		});
+		usersTable.addColumn(column);
+		usersTable.addColumn(new Column("lastLogin", "Последнее посещение"));
 		
 		editLink.setImageSrc("/css/images/user_edit.png");
 		editLink.setTitle("Редактировать");
@@ -69,7 +103,7 @@ public class UserPage extends AdminOnlyPage {
 		deleteLink.setTitle("Удалить");
 		deleteLink.setAttribute("onclick", "return window.confirm('Вы уверены, что хотите удалить этого пользователя?')");
 		
-		Column column = new Column("Action", "Операции");
+		column = new Column("Action", "Операции");
 		AbstractLink[] links = new AbstractLink[] { editLink, deleteLink };
 		column.setDecorator(new LinkDecorator(usersTable, links, "id"));
 		column.setSortable(false);
@@ -145,12 +179,6 @@ public class UserPage extends AdminOnlyPage {
 				theUser = userDao.findById(id);
 				users.add(theUser);
 				
-/*				usernameField.setValue(theUser.getName());
-				resetPasswordCheck.setValue("" + false);
-				isActiveCheck.setValue("" + theUser.isActive());
-				roleSelect.setValue(theUser.getRole());
-				firstnameField.setValue(theUser.getFirstname());
-				lastnameField.setValue(theUser.getLastname());*/
 				editUserForm.copyFrom(theUser);
 				resetPasswordCheck.setValue("" + false);
 			}
@@ -174,12 +202,7 @@ public class UserPage extends AdminOnlyPage {
 			if (resetPasswordCheck.isChecked()) {
 				usr.setPassword(usr.getName());
 			}
-//			usr.setActive(isActiveCheck.isChecked());
-//			usr.setRole(roleSelect.getValue());
-//			usr.setFirstname(firstnameField.getValue());
-//			usr.setLastname(lastnameField.getValue());
-			
-			
+
 			userDao.update(usr);			
 			setRedirect(UserPage.class);
 		} catch (PersistenceException ex) {

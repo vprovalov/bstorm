@@ -17,6 +17,9 @@ import bstorm.listener.EntityManagerFactoryInjection;
 public class BasePage extends Page {
 	private EntityManager em = null;
 	public User user = null;
+	
+	public boolean isAdmin = false;
+	public boolean isModerator = false;
 		
 	@Override
 	public List<Element> getHeadElements() {
@@ -56,6 +59,10 @@ public class BasePage extends Page {
 		HttpSession session = getContext().getRequest().getSession(false);
 		if (session != null) {
 			user = (User)session.getAttribute("user");
+			if (user != null) {
+				isAdmin = user.getRole().equals("admin");
+				isModerator = user.getRole().equals("moderator");
+			}
 		}
 	}
 	

@@ -45,7 +45,7 @@ public class LoginPage extends BasePage {
 						if (user.getRole().equals("admin")) {
 							setRedirect(bstorm.page.UserPage.class);
 						} else {
-							setRedirect(HomePage.class);
+							setRedirect(TaskPage.class);
 						}
 					} else {
 						errorMessage = "Пользователь не активирован! Обратитесь к администратору!";

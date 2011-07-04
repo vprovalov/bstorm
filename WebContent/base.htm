@@ -2,12 +2,10 @@
 <html>
 <head>
 	<title>Метод мозгового штурма
-	#if ($user) 
-		#if ($user.role == 'moderator')
+	#if ($isModerator) 
 		(модератор)
-		#elseif ($user.role == 'admin')
+	#elseif ($isAdmin)
 		(администратор)
-		#end
 	#end
 	</title>
 	${headElements}
@@ -16,7 +14,13 @@
 <body>
 	<div class="header">
 		<div class="header-left">
-		<a href="${context}/home.htm">Метод мозгового штурма</a>
+		<a href="${context}/home.htm">Метод мозгового штурма
+	#if ($isModerator) 
+		(модератор)
+	#elseif ($isAdmin)
+		(администратор)
+	#end
+		</a>
 		</div>
 		<div class="header-right">
 			<table cellspacing="4">

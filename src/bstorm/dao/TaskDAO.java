@@ -24,6 +24,10 @@ public class TaskDAO {
 	public Task findById(final Long id) {
 		return em.find(Task.class, id);
 	}
+
+	public List<Task> getAllTasks() {
+		return em.createQuery("SELECT t FROM Task t", Task.class).getResultList();
+	}
 	
 	public List<Task> findTasksNew() {
 		return em.createQuery("SELECT t FROM Task t WHERE t.state = 'INIT'", Task.class).getResultList();
