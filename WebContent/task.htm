@@ -47,24 +47,25 @@
 
 #if ($user)	
 	<div id="task-dialog" style="display:none">
-		<form>
+		<div class="error ui-widget" style="display:none">
+			<div class="ui-state-error ui-corner-all" style="padding: 0 .7em;"> 
+				<p><span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span> 
+				<strong>Ошибка, повторите попытку позднее!</strong></p>
+			</div>
+		</div>		
+	
+		<span class="loading" style="display:none">Отправляем запрос</span>
+		<form id="edit-task" action="$context/task.htm" method="post">
+			<input name="id" type="hidden" value="-1"></input>
 			<h3>Название</h3>
 			<input name="shortDescription" type="text" style="width: 550px;" value=""/>
 			<h3>Описание</h3>
 			<textarea name="description" style="width: 550px; height:150px; margin: 0"></textarea>
 			<h3>Максимальное количество участников</h3>
-				<input name="maxParticipants" type="text" readonly="true" style="float: left; margin: 2px; padding: 4px; border: 1px solid #CCC; width: 30px;" value="0"/>
+				<input name="maxParticipants" type="text" readonly="true" style="float: left; margin: 2px; padding: 4px; border: 1px solid #CCC; width: 30px;" value="10"/>
 				<a id="inc-max-participants" href="#" class="small-button ui-state-default ui-corner-all"><span class="ui-icon ui-icon-circle-plus"></span></a>
 				<a id="dec-max-participants" href="#" class="small-button ui-state-default ui-corner-all"><span class="ui-icon ui-icon-circle-minus"></span></a>
 				<div style="clear:both"></div>
-			<h3>Файлы</h3>
-			<div id="files">
-				<table cellpadding="0" cellspacing="0">
-				</table>
-				<div style="padding:4px; margin:2px">
-					<a id="add-task-file" href="#" class="button ui-state-default ui-corner-all">Добавить...</a>
-				</div>
-			</div>		
 		</form>
 	</div>	
 #end

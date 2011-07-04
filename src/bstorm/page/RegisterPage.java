@@ -71,6 +71,7 @@ public class RegisterPage extends BasePage {
 	}
 	
 	public boolean onSubmit() {
+		String errmsg = "Неизвестная ошибка.";
 		if (registerForm.isValid()) {
 			EntityManager em = getEntityManager();
 			if (em != null) {
@@ -92,13 +93,16 @@ public class RegisterPage extends BasePage {
 						setRedirect(HomePage.class);
 						return true;
 					} else {
-						registerForm.setError("Пользователь с таким именем уже существует!");
+						errmsg = "Пользователь с таким именем уже существует!";
 					}
 				} catch(PersistenceException ex) {
-					registerForm.setError("Ошибка: " + ex.getMessage());
+					errmsg = "Ошибка: " + ex.getMessage();
 				}
 			}
 		}
+		registerForm.getField("password").setValue("");
+		registerForm.getField("repassword").setValue("");
+		registerForm.setError(errmsg);
 		return false;
 	}
 }

@@ -13,7 +13,30 @@ $(function(){
 					$(this).dialog("close");
 				},
 				'Сохранить' : function() {
-					$(this).dialog("close");
+					$("#task-dialog").animate({scrollTop: 0 }, 1000);
+					$('#task-dialog .loading').show();
+					$.ajax({
+						type: "POST",
+						url: "task.htm?pageAction=updateTask",
+						data: {
+							id: $("#edit-task input[name=id]").val(),
+							shortDescription: $("#edit-task input[name=shortDescription]").val(),
+							description: $("#edit-task input[name=description]").val(),
+							maxParticipants: $("#edit-task input[name=maxParticipants]").val()
+						},
+						success: function(result) {
+							if (result.error) {
+								$('#task-dialog .error strong').html(result.error);
+								$('#task-dialog .error').show();
+							} else {
+								$("#task-dialog").dialog("close");							
+							}
+						},
+						error: function(err) {
+							$('#task-dialog .loading').hide();
+							$('#task-dialog .error').show();							
+						}
+					});
 				}					
 			}
 		});
@@ -35,15 +58,5 @@ $(function(){
 			current = 1;
 		}
 		$("input[name=maxParticipants]").val(current);		
-	});
-	
-	$('#add-task-file').click(function() {
-		var count = $('#files table tr').size();
-		var tmp = '<tr><td><input type="file" id="hidden_select_file"/></td><td><a href="#" title="Удалить" class="small-button ui-state-default ui-corner-all"><span class="ui-icon ui-icon-circle-close"></span></a></td></tr>'
-		$('#files table').append(tmp);
-		$('#hidden_select_file').trigger('click');
-		if ($("#hidden_select_file").val() != '') {
-			$("#task-file").html($("#hidden_select_file").val());
-		}
 	});
 });

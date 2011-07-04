@@ -3,6 +3,7 @@ package bstorm.dao;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 
 import bstorm.entity.Task;
 
@@ -39,5 +40,12 @@ public class TaskDAO {
 	
 	public List<Task> findTasksFinished() {
 		return em.createQuery("SELECT t FROM Task t WHERE t.state = 'FINISHED'", Task.class).getResultList();
+	}
+	
+	public void update(final Task task) {
+		EntityTransaction tr = em.getTransaction();
+		tr.begin();
+		em.persist(task);
+		tr.commit();
 	}
 }

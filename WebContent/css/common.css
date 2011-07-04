@@ -79,7 +79,7 @@ table {
 
 .loading {
 	padding-left: 18px;
-	background-image: url('loader.gif');
+	background-image: url('images/loader.gif');
 	background-repeat: no-repeat;
 	font-size: 80%;
 }
