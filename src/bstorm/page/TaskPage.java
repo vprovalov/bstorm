@@ -1,8 +1,11 @@
 package bstorm.page;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceException;
 
 import org.apache.click.ActionResult;
 import org.apache.click.control.Form;
@@ -41,8 +44,6 @@ public class TaskPage extends BasePage {
 			
 			JsImport jsimport = new JsImport("/js/task-init.js");
 			headElements.add(jsimport);
-			jsimport = new JsImport("/js/jquery.form.js");
-			headElements.add(jsimport);			
 		}
 		return headElements;
 	}
@@ -63,28 +64,41 @@ public class TaskPage extends BasePage {
 	}
 	
 	public ActionResult updateTask() {
+		Map<String, String> result = new HashMap<String, String>();
 		onInit();
 		
 		if (user != null) {
-			
-			Task task;
-			if (id == null || id == -1) {
-				task = new Task();
-				task.setOwner(user);
-				task.setState("INIT");
-			} else {
-				task = taskDao.findById(id);
+			try {
+				if (shortDescription == null || shortDescription.isEmpty()) {
+					result.put("error", "Не заполнено поле Название");
+				} else if (description == null || description.isEmpty()) {
+					result.put("error", "Не заполнено поле Описание");
+				} else if (maxParticipants == null || maxParticipants < 1) {
+					result.put("error", "Максимальное количество участников <1");
+				} else {
+					Task task;
+					if (id == null || id == -1) {
+						task = new Task();
+						task.setOwner(user);
+						task.setState("INIT");
+					} else {
+						task = taskDao.findById(id);
+					}
+					
+					task.setDescription(description);
+					task.setShortDescription(shortDescription);
+					task.setMaxParticipants(maxParticipants);
+					
+					taskDao.update(task);
+				}
+			} catch(PersistenceException ex) {
+				result.put("error", "Ошибка: " + ex.getMessage());
 			}
-			
-			task.setDescription(description);
-			task.setShortDescription(shortDescription);
-			task.setMaxParticipants(maxParticipants);
-			
-			taskDao.update(task);
-			return new ActionResult("{}", ClickUtils.getMimeType("json"));
+		} else {
+			result.put("error", "Не достаточно прав для выполнения операции");
 		}
 		
-		return new ActionResult("{error='error'}", ClickUtils.getMimeType("json"));
+		return new ActionResult(new Gson().toJson(result), ClickUtils.getMimeType("json"));
 	}
 	
 	public ActionResult getTask() {

@@ -17,14 +17,14 @@ public class RegisterPage extends BasePage {
 	public Form registerForm = new Form();
 	
 	public RegisterPage(){
-		FieldSet loginFieldSet = new FieldSet("Учетная запись");
+		FieldSet loginFieldSet = new FieldSet("РЈС‡РµС‚РЅР°СЏ Р·Р°РїРёСЃСЊ");
 		registerForm.add(loginFieldSet);
 		
-		TextField usernameField = new TextField("username", "Имя пользователя", true) {
+		TextField usernameField = new TextField("username", "РРјСЏ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ", true) {
 			@Override
 			public void validate() {
 				if (!StringUtils.validateUsername(value)) {
-					setError(getLabel() + " должно содержать только английские буквы и цифры");
+					setError(getLabel() + " РґРѕР»Р¶РЅРѕ СЃРѕРґРµСЂР¶Р°С‚СЊ С‚РѕР»СЊРєРѕ Р°РЅРіР»РёР№СЃРєРёРµ Р±СѓРєРІС‹ Рё С†РёС„СЂС‹");
 					return;
 				}
 				super.validate();
@@ -35,16 +35,16 @@ public class RegisterPage extends BasePage {
 		usernameField.setFocus(true);
 		loginFieldSet.add(usernameField);
 		
-		final PasswordField passwordField = new PasswordField("password", "Пароль", true);
+		final PasswordField passwordField = new PasswordField("password", "РџР°СЂРѕР»СЊ", true);
 		passwordField.setMinLength(6);
 		passwordField.setMaxLength(20);
 		loginFieldSet.add(passwordField);
 		
-		PasswordField rePasswordField = new PasswordField("repassword", "Повторите пароль", true) {
+		PasswordField rePasswordField = new PasswordField("repassword", "РџРѕРІС‚РѕСЂРёС‚Рµ РїР°СЂРѕР»СЊ", true) {
 			@Override
 			public void validate() {
 				if (!value.equals(passwordField.getValue())) {
-					setError("Повторный пароль не совпадает");
+					setError("РџРѕРІС‚РѕСЂРЅС‹Р№ РїР°СЂРѕР»СЊ РЅРµ СЃРѕРІРїР°РґР°РµС‚");
 					return;
 				}
 				super.validate();
@@ -54,24 +54,24 @@ public class RegisterPage extends BasePage {
 		rePasswordField.setMaxLength(20);
 		loginFieldSet.add(rePasswordField);
 		
-		FieldSet personalFieldSet = new FieldSet("Персональные данные");
+		FieldSet personalFieldSet = new FieldSet("РџРµСЂСЃРѕРЅР°Р»СЊРЅС‹Рµ РґР°РЅРЅС‹Рµ");
 		registerForm.add(personalFieldSet);
 		
-		TextField firstnameField = new TextField("firstname", "Имя", true);
+		TextField firstnameField = new TextField("firstname", "РРјСЏ", true);
 		firstnameField.setMinLength(1);
 		firstnameField.setMaxLength(30);
 		personalFieldSet.add(firstnameField);
 		
-		TextField lastnameField = new TextField("lastname", "Фамилия", true);
+		TextField lastnameField = new TextField("lastname", "Р¤Р°РјРёР»РёСЏ", true);
 		lastnameField.setMinLength(1);
 		lastnameField.setMaxLength(40);
 		personalFieldSet.add(lastnameField);		
 		
-		registerForm.add(new Submit("register", "Регистрация", this, "onSubmit"));
+		registerForm.add(new Submit("register", "Р РµРіРёСЃС‚СЂР°С†РёСЏ", this, "onSubmit"));
 	}
 	
 	public boolean onSubmit() {
-		String errmsg = "Неизвестная ошибка.";
+		String errmsg = "РќРµРёР·РІРµСЃС‚РЅР°СЏ РѕС€РёР±РєР°.";
 		if (registerForm.isValid()) {
 			EntityManager em = getEntityManager();
 			if (em != null) {
@@ -93,10 +93,10 @@ public class RegisterPage extends BasePage {
 						setRedirect(HomePage.class);
 						return true;
 					} else {
-						errmsg = "Пользователь с таким именем уже существует!";
+						errmsg = "РџРѕР»СЊР·РѕРІР°С‚РµР»СЊ СЃ С‚Р°РєРёРј РёРјРµРЅРµРј СѓР¶Рµ СЃСѓС‰РµСЃС‚РІСѓРµС‚!";
 					}
 				} catch(PersistenceException ex) {
-					errmsg = "Ошибка: " + ex.getMessage();
+					errmsg = "РћС€РёР±РєР°: " + ex.getMessage();
 				}
 			}
 		}

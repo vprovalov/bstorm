@@ -3,7 +3,6 @@ package bstorm.page;
 import java.util.Date;
 
 import javax.persistence.EntityManager;
-import javax.servlet.http.HttpServletRequest;
 
 import org.apache.click.control.Form;
 import org.apache.click.control.PasswordField;
@@ -31,7 +30,7 @@ public class LoginPage extends BasePage {
 		final String username = form.getFieldValue("username");
 		final String password = form.getFieldValue("password");
 		if (username.isEmpty() || password.isEmpty()) {
-			errorMessage = "Учетная запись и/или пароль не указаны.";
+			errorMessage = "РЈС‡РµС‚РЅР°СЏ Р·Р°РїРёСЃСЊ Рё/РёР»Рё РїР°СЂРѕР»СЊ РЅРµ СѓРєР°Р·Р°РЅС‹.";
 		} else {
 			EntityManager em = getEntityManager();
 			if (em != null) {
@@ -48,13 +47,13 @@ public class LoginPage extends BasePage {
 							setRedirect(TaskPage.class);
 						}
 					} else {
-						errorMessage = "Пользователь не активирован! Обратитесь к администратору!";
+						errorMessage = "РџРѕР»СЊР·РѕРІР°С‚РµР»СЊ РЅРµ Р°РєС‚РёРІРёСЂРѕРІР°РЅ! РћР±СЂР°С‚РёС‚РµСЃСЊ Рє Р°РґРјРёРЅРёСЃС‚СЂР°С‚РѕСЂСѓ!";
 					}
 				} else {
-					errorMessage = "Неправильная учетная запись или пароль!";
+					errorMessage = "РќРµРїСЂР°РІРёР»СЊРЅР°СЏ СѓС‡РµС‚РЅР°СЏ Р·Р°РїРёСЃСЊ РёР»Рё РїР°СЂРѕР»СЊ!";
 				}
 			} else {
-				errorMessage = "Ошибка подключения к базе данных!";
+				errorMessage = "РћС€РёР±РєР° РїРѕРґРєР»СЋС‡РµРЅРёСЏ Рє Р±Р°Р·Рµ РґР°РЅРЅС‹С…!";
 			}
 		}
 		return true;

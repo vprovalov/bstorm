@@ -1,1 +1,5 @@
-<a href="${context}/task.htm">Задачи</a>
+#if ($isAdmin)
+	<a href="${context}/user.htm">Пользователи</a>
+#else
+	<a href="${context}/task.htm">Задачи</a>
+#end

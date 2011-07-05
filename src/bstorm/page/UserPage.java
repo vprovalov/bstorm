@@ -68,7 +68,7 @@ public class UserPage extends AdminOnlyPage {
 				HtmlStringBuffer buffer = new HtmlStringBuffer();
 				buffer.elementStart("img");
 				buffer.appendAttribute("src", context.getServletContext().getContextPath() + "/css/images/" + (active ? "bullet_green.png" : "bullet_red.png"));
-				buffer.appendAttribute("title", (active ? "Активный" : "Не активный"));
+				buffer.appendAttribute("title", (active ? "РђРєС‚РёРІРЅС‹Р№" : "РќРµ Р°РєС‚РёРІРЅС‹Р№"));
 				buffer.elementEnd();
 				return buffer.toString();
 			}
@@ -76,34 +76,34 @@ public class UserPage extends AdminOnlyPage {
 		
 		usersTable.addColumn(column);		
 		usersTable.addColumn(new Column("id"));
-		usersTable.addColumn(new Column("name", "Логин"));
+		usersTable.addColumn(new Column("name", "Р›РѕРіРёРЅ"));
 		
-		usersTable.addColumn(new Column("firstname", "Имя"));
-		usersTable.addColumn(new Column("lastname", "Фамилия"));
-		column = new Column("role", "Группа");
+		usersTable.addColumn(new Column("firstname", "РРјСЏ"));
+		usersTable.addColumn(new Column("lastname", "Р¤Р°РјРёР»РёСЏ"));
+		column = new Column("role", "Р“СЂСѓРїРїР°");
 		column.setDecorator(new Decorator() {
 			@Override
 			public String render(Object object, Context context) {
 				final String role = ((User)object).getRole();
 				if (role.equals("admin")) {
-					return "Администратор";
+					return "РђРґРјРёРЅРёСЃС‚СЂР°С‚РѕСЂ";
 				} else if (role.equals("moderator")) {
-					return "Модератор";
+					return "РњРѕРґРµСЂР°С‚РѕСЂ";
 				}
-				return "Пользователь";
+				return "РџРѕР»СЊР·РѕРІР°С‚РµР»СЊ";
 			}
 		});
 		usersTable.addColumn(column);
-		usersTable.addColumn(new Column("lastLogin", "Последнее посещение"));
+		usersTable.addColumn(new Column("lastLogin", "РџРѕСЃР»РµРґРЅРµРµ РїРѕСЃРµС‰РµРЅРёРµ"));
 		
 		editLink.setImageSrc("/css/images/user_edit.png");
-		editLink.setTitle("Редактировать");
+		editLink.setTitle("Р РµРґР°РєС‚РёСЂРѕРІР°С‚СЊ");
 		
 		deleteLink.setImageSrc("/css/images/user_delete.png");
-		deleteLink.setTitle("Удалить");
-		deleteLink.setAttribute("onclick", "return window.confirm('Вы уверены, что хотите удалить этого пользователя?')");
+		deleteLink.setTitle("РЈРґР°Р»РёС‚СЊ");
+		deleteLink.setAttribute("onclick", "return window.confirm('Р’С‹ СѓРІРµСЂРµРЅС‹, С‡С‚Рѕ С…РѕС‚РёС‚Рµ СѓРґР°Р»РёС‚СЊ СЌС‚РѕРіРѕ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ?')");
 		
-		column = new Column("Action", "Операции");
+		column = new Column("Action", "РћРїРµСЂР°С†РёРё");
 		AbstractLink[] links = new AbstractLink[] { editLink, deleteLink };
 		column.setDecorator(new LinkDecorator(usersTable, links, "id"));
 		column.setSortable(false);
@@ -128,38 +128,38 @@ public class UserPage extends AdminOnlyPage {
 
 		addControl(editUserForm);
 		
-		FieldSet loginFieldSet = new FieldSet("Учетная запись");
+		FieldSet loginFieldSet = new FieldSet("РЈС‡РµС‚РЅР°СЏ Р·Р°РїРёСЃСЊ");
 		editUserForm.add(loginFieldSet);
 		
-		usernameField = new TextField("name", "Имя пользователя");
+		usernameField = new TextField("name", "РРјСЏ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ");
 		usernameField.setReadonly(true);
 		loginFieldSet.add(usernameField);
 		
-		resetPasswordCheck = new Checkbox("resetPassword", "Сбросить пароль");
+		resetPasswordCheck = new Checkbox("resetPassword", "РЎР±СЂРѕСЃРёС‚СЊ РїР°СЂРѕР»СЊ");
 		loginFieldSet.add(resetPasswordCheck);
-		isActiveCheck = new Checkbox("active", "Активный");
+		isActiveCheck = new Checkbox("active", "РђРєС‚РёРІРЅС‹Р№");
 		loginFieldSet.add(isActiveCheck);
 		
-		roleSelect = new Select("role", "Группа");
-		roleSelect.add(new Option("user", "Пользователь"));
-		roleSelect.add(new Option("moderator", "Модератор"));
-		roleSelect.add(new Option("admin", "Администратор"));
+		roleSelect = new Select("role", "Р“СЂСѓРїРїР°");
+		roleSelect.add(new Option("user", "РџРѕР»СЊР·РѕРІР°С‚РµР»СЊ"));
+		roleSelect.add(new Option("moderator", "РњРѕРґРµСЂР°С‚РѕСЂ"));
+		roleSelect.add(new Option("admin", "РђРґРјРёРЅРёСЃС‚СЂР°С‚РѕСЂ"));
 		loginFieldSet.add(roleSelect);
 		
-		FieldSet personalFieldSet = new FieldSet("Персональные данные");
+		FieldSet personalFieldSet = new FieldSet("РџРµСЂСЃРѕРЅР°Р»СЊРЅС‹Рµ РґР°РЅРЅС‹Рµ");
 		editUserForm.add(personalFieldSet);
 		
-		firstnameField = new TextField("firstname", "Имя", true);
+		firstnameField = new TextField("firstname", "РРјСЏ", true);
 		firstnameField.setMinLength(1);
 		firstnameField.setMaxLength(30);
 		personalFieldSet.add(firstnameField);
 		
-		lastnameField = new TextField("lastname", "Фамилия", true);
+		lastnameField = new TextField("lastname", "Р¤Р°РјРёР»РёСЏ", true);
 		lastnameField.setMinLength(1);
 		lastnameField.setMaxLength(40);
 		personalFieldSet.add(lastnameField);		
 		
-		Submit save = new Submit("save", "Сохранить", this, "onSaveChanges");
+		Submit save = new Submit("save", "РЎРѕС…СЂР°РЅРёС‚СЊ", this, "onSaveChanges");
 		editUserForm.add(save);
 		
 		editUserForm.add(new HiddenField("id", Long.class));
@@ -206,7 +206,7 @@ public class UserPage extends AdminOnlyPage {
 			userDao.update(usr);			
 			setRedirect(UserPage.class);
 		} catch (PersistenceException ex) {
-			editUserForm.setError("Ошибка: " + ex.getMessage());
+			editUserForm.setError("РћС€РёР±РєР°: " + ex.getMessage());
 			return false;
 		}
 		

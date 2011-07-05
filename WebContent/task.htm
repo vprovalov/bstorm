@@ -11,19 +11,31 @@
 			#if ($task.state == 'INIT')
 				<tr>
 					<td>
-						${task.shortDescription}
+						<span title="Задача #${task.id}">${task.shortDescription}</span>
 						#if ($user)
-							<a href="#" id="task-details">Подробнее...</a>
+							#if (${user.id} == ${task.owner.id})
+								<a href="#" id="${task.id}" onclick="openEditTaskDialog($(this).attr('id'))">Изменить...</a>
+							#else
+								<a href="#" id="${task.id}" onclick="openShowTaskDialog($(this).attr('id'))">Подробнее...</a>
+							#end
 						#end
 					</td>
 					<td class="data-column" style="width:100px">
+						#if ($user)
 						<a href="#" title="Отправить сообщение">
 						${task.owner.firstname} ${task.owner.lastname}
 						</a>
+						#else
+							<span>${task.owner.firstname} ${task.owner.lastname}</span>
+						#end						
 					</td>
 					<td class="data-column" style="width:120px">
 						#if ($isModerator)
-							<a id="subscribe" href="#" class="button ui-state-default ui-corner-all"><span class="ui-icon ui-icon-comment"></span>Начать решение</a>
+							#if (${task.participants.size()} == ${task.maxParticipants}) 
+								<a id="subscribe" href="#" class="button ui-state-default ui-corner-all"><span class="ui-icon ui-icon-comment"></span>Начать решение</a>
+							#else
+								<span>Ожидаем участников</span>
+							#end
 						#elseif ($user)
 							<a id="subscribe" href="#" class="button ui-state-default ui-corner-all"><span class="ui-icon ui-icon-newwin"></span>Подать заявку</a>
 						#else
@@ -32,7 +44,7 @@
 					</td>
 					<td class="data-column" style="width:100px">
 						#if ($isModerator)
-							<a id="open-subscribers" href="#" title="Новые заявки!" class="button ui-state-default ui-corner-all">
+							<a id="open-subscribers" href="#" title="Откыть заявки" class="button ui-state-default ui-corner-all">
 								<span class="ui-icon ui-icon-alert"></span>${task.participants.size()}/${task.maxParticipants}
 							</a>
 						#else
