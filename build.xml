@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<project default="build" basedir=".">
+	<property environment="env"/>
+	<property name="build.dir" value="build"/>
+	<property name="src.dir" value="src"/>
+	<property name="web.dir" value="WebContent"/>
+	<property name="lib.dir" value="lib"/>
+	
+	<path id="3rdPartyJars">
+		<fileset dir="${lib.dir}">
+			<include name="*.jar"/>
+		</fileset>
+		<fileset dir="C:/Program Files/Apache Software Foundation/Tomcat 7.0/lib">
+			<include name="*.jar"/>
+		</fileset>
+	</path>
+	
+	<target name="clean">
+		<delete dir="${build.dir}"/>		
+	</target>
+	
+	<target name="prepare">
+		<mkdir dir="${build.dir}"/>
+	</target>
+
+	<target name="build">
+		<javac srcdir="${src.dir}" destdir="${build.dir}" encoding="UTF-8">
+			<classpath>
+				<path refid="3rdPartyJars"/>
+			</classpath>
+		</javac>
+		<copy todir="${build.dir}">
+			<fileset dir="${src.dir}">
+				<exclude name="**/*.java"/>
+			</fileset>
+		</copy>
+	</target>
+	
+	<target name="war">
+		<war warfile="bstorm.war" webxml="${web.dir}/WEB-INF/web.xml ">
+			<classes dir="${build.dir}"/>			
+			<fileset dir="${web.dir}"/>
+			<lib dir="${lib.dir}"/>
+		</war>
+	</target>
+	
+	<target name="buildall" depends="prepare,build"/>
+	<target name="all" depends="clean,buildall,war" description="Clean then compile project"/>
+</project>

@@ -37,6 +37,11 @@ public class UserDAO {
 		return em.find(User.class, id);
 	}
 	
+	public List<User> findAllAdmins() {
+		Query q = em.createNamedQuery("SELECT u FROM User u WHERE role='admin'");
+		return q.getResultList();
+	}
+	
 	public void update(final User user) {
 		EntityTransaction tr = em.getTransaction();
 		tr.begin();

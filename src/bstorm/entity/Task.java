@@ -1,5 +1,6 @@
 package bstorm.entity;
 
+import java.util.Date;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -7,39 +8,64 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.OrderBy;
 
 @Entity
 public class Task {
 	@Id @GeneratedValue(strategy=GenerationType.AUTO)
 	private Long id;
-	@Column(nullable=false)
-	private String state;
+
 	private String shortDescription;
 	@Column(length=1024)
 	private String description;
 	@Column(nullable=false)
 	private Integer maxParticipants;
 	
+	@Column(nullable=false)
+	private Date created;
+	
+	public Date getCreated() {
+		return created;
+	}
+
+	public void setCreated(Date created) {
+		this.created = created;
+	}
+
 	@ManyToOne
 	private User owner;
 	
-	@OneToMany
+	@ManyToMany
 	@OrderBy("name ASC")
 	private Set<User> participants;
+	
+	@OneToOne
+	private Solution solution;
+	
+	@OneToOne
+	private Result result;
+	
+	public Result getResult() {
+		return result;
+	}
+
+	public void setResult(Result result) {
+		this.result = result;
+	}
+
+	public Solution getSolution() {
+		return solution;
+	}
+
+	public void setSolution(Solution solution) {
+		this.solution = solution;
+	}
 
 	public Task() {
 	}   
-
-	public String getState() {
-		return state;
-	}
-
-	public void setState(String state) {
-		this.state = state;
-	}
 
 	public String getShortDescription() {
 		return shortDescription;

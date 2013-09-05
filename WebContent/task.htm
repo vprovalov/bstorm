@@ -8,7 +8,7 @@
 	<h2>Новые задачи</h2>
 	<table class="tasks" cellspacing="0" cellpadding="0" width="100%">
 		#foreach ($task in $tasks)
-			#if ($task.state == 'INIT')
+			#if (!${task.solution} && !${task.result})
 				<tr>
 					<td>
 						<span title="Задача #${task.id}">${task.shortDescription}</span>
@@ -37,15 +37,25 @@
 								<span>Ожидаем участников</span>
 							#end
 						#elseif ($user)
-							<a id="subscribe" href="#" class="button ui-state-default ui-corner-all"><span class="ui-icon ui-icon-newwin"></span>Подать заявку</a>
+							#if (${applications.get($task.id).contains($user)})
+								<span>Ожидаем подтверждение</span>
+							#elseif (${task.participants.contains($user)})
+								<span>Заявка принята</span>
+							#else
+								<a id="${task.id}" onclick="applyTask($(this).attr('id'))" href="#" class="button ui-state-default ui-corner-all"><span class="ui-icon ui-icon-newwin"></span>Подать заявку</a>
+							#end
 						#else
 						&nbsp;
 						#end
 					</td>
 					<td class="data-column" style="width:100px">
 						#if ($isModerator)
-							<a id="open-subscribers" href="#" title="Откыть заявки" class="button ui-state-default ui-corner-all">
-								<span class="ui-icon ui-icon-alert"></span>${task.participants.size()}/${task.maxParticipants}
+							#if (${applications.get($task.id)} && ${applications.get($task.id).size()} > 0)
+							<span class="ui-icon ui-icon-alert"></span>
+							#end								
+							<a id="${task.id}" href="#" onclick="openApplicantsDialog($(this).attr('id'))" title="Откыть заявки" class="button ui-state-default ui-corner-all">
+								<span class="ui-icon ui-icon-newwin"></span>
+								${task.participants.size()}/${task.maxParticipants}
 							</a>
 						#else
 						${task.participants.size()}/${task.maxParticipants}
@@ -79,5 +89,19 @@
 				<a id="dec-max-participants" href="#" class="small-button ui-state-default ui-corner-all"><span class="ui-icon ui-icon-circle-minus"></span></a>
 				<div style="clear:both"></div>
 		</form>
-	</div>	
+	</div>
+	
+	#if ($isModerator)
+		<div id="applications-list" title="Заявки">
+			<div class="error ui-widget" style="display:none">
+				<div class="ui-state-error ui-corner-all" style="padding: 0 .7em;"> 
+					<p><span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span> 
+					<strong>Ошибка, повторите попытку позднее!</strong></p>
+				</div>
+			</div>	
+			<span class="loading" style="display:none">Отправляем запрос</span>		
+			<table cellpadding="0" cellspacing="0">	
+			</table>
+		</div>	
+	#end	
 #end

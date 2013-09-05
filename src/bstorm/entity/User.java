@@ -83,5 +83,21 @@ public class User {
 
 	public Long getId() {
 		return id;
-	}	
+	}
+	
+	public boolean equals(Object other) {
+		if (this == other) return true;
+		
+		if (!(other instanceof User)) return false;
+		User user = (User)other;
+		if (!user.getId().equals(getId())) return false;
+		
+		return true;
+	}
+	
+	public int hashCode() {
+		if (id == null) return -1;
+		long longid = id;
+		return (int)longid;
+	}
 }

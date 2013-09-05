@@ -5,6 +5,8 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 
+import bstorm.entity.Application;
+import bstorm.entity.Solution;
 import bstorm.entity.Task;
 
 public class TaskDAO {
@@ -40,6 +42,32 @@ public class TaskDAO {
 	
 	public List<Task> findTasksFinished() {
 		return em.createQuery("SELECT t FROM Task t WHERE t.state = 'FINISHED'", Task.class).getResultList();
+	}
+	
+	public void accept(Task task, Application application) {
+		task.getParticipants().add(application.getFrom());
+		
+		EntityTransaction tr = em.getTransaction();	
+		tr.begin();	
+		em.persist(task);
+		em.remove(application);
+		tr.commit();
+	}
+	
+	public Solution startSolution(Task task) {
+		Solution solution = new Solution();
+		
+		solution.setFinished(false);
+		solution.setTask(task);
+		task.setSolution(solution);
+		
+		EntityTransaction tr = em.getTransaction();	
+		tr.begin();	
+		em.persist(task);
+		em.persist(solution);		
+		tr.commit();
+		
+		return solution;
 	}
 	
 	public void update(final Task task) {
